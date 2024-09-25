@@ -16,10 +16,8 @@ import java.io.Serializable;
 @Builder
 @Table(name= "persona")
 @Audited
-public class Persona implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Persona extends Base {
+
     @Column(name="nombre")
     private String nombre;
     @Column(name = "apellido")
