@@ -6,18 +6,13 @@ import com.example.inicial1.repositories.PersonaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-
 @Service
-public class PersonaServices extends BaseServiceImpl<Persona, Long> {
+public class PersonaServicesImpl extends BaseServiceImpl<Persona, Long> implements PersonaService{
 
     @Autowired
     private PersonaRepository personaRepository;
 
-    public PersonaServices(BaseRepository<Persona, Long> baseRepository){
+    public PersonaServicesImpl(BaseRepository<Persona, Long> baseRepository){
         super(baseRepository);
     }
-
-
 }
