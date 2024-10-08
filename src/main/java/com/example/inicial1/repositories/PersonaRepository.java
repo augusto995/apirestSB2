@@ -1,6 +1,8 @@
 package com.example.inicial1.repositories;
 
 import com.example.inicial1.entities.Persona;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -12,17 +14,27 @@ import java.util.List;
 public interface PersonaRepository extends BaseRepository<Persona, Long> {
 
     List<Persona> findByNombreContainingOrApellidoContaining(String nombre, String apellido);
+    Page<Persona> findByNombreContainingOrApellidoContaining(String nombre, String apellido, Pageable pageable);
 
     //boolean existByDni(int dni);
 
     @Query(value = "SELECT p FROM Persona p WHERE p.nombre LIKE CONCAT('%', :filtro, '%') OR p.apellido LIKE CONCAT('%', :filtro, '%')")
     List<Persona> search(@Param("filtro") String filtro);
 
+    @Query(value = "SELECT p FROM Persona p WHERE p.nombre LIKE CONCAT('%', :filtro, '%') OR p.apellido LIKE CONCAT('%', :filtro, '%')")
+    Page<Persona> search(@Param("filtro") String filtro, Pageable pageable);
 
     @Query(
             value = "SELECT * FROM persona WHERE persona.nombre LIKE CONCAT('%', :filtro, '%') OR persona.apellido LIKE CONCAT('%', :filtro, '%')",
             nativeQuery = true
     )
     List<Persona> searchNativo(@Param("filtro") String filtro);
+
+    @Query(
+            value = "SELECT * FROM persona WHERE persona.nombre LIKE CONCAT('%', :filtro, '%') OR persona.apellido LIKE CONCAT('%', :filtro, '%')",
+            countQuery = "SELECT count(*) FROM persona",
+            nativeQuery = true
+    )
+    Page<Persona> searchNativo(@Param("filtro") String filtro, Pageable pageable);
 
 }
