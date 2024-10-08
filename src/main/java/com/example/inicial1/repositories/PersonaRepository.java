@@ -15,12 +15,14 @@ public interface PersonaRepository extends BaseRepository<Persona, Long> {
 
     //boolean existByDni(int dni);
 
-    @Query(value = "SELECT p FROM Persona p WHERE p.nombre LIKE %:filtro% OR p.apellido LIKE &filtro&")
+    @Query(value = "SELECT p FROM Persona p WHERE p.nombre LIKE CONCAT('%', :filtro, '%') OR p.apellido LIKE CONCAT('%', :filtro, '%')")
     List<Persona> search(@Param("filtro") String filtro);
 
+
     @Query(
-            value = "SELECT * FROM persona WHERE persona.nombre LIKE %:filtro% OR persona.apellido LIKE &filtro&",
+            value = "SELECT * FROM persona WHERE persona.nombre LIKE CONCAT('%', :filtro, '%') OR persona.apellido LIKE CONCAT('%', :filtro, '%')",
             nativeQuery = true
     )
     List<Persona> searchNativo(@Param("filtro") String filtro);
+
 }
