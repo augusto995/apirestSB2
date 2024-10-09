@@ -1,5 +1,6 @@
 package com.example.inicial1.services;
-
+import com.example.inicial1.dtos.PersonaBasicaDTO;
+import org.modelmapper.ModelMapper;
 import com.example.inicial1.entities.Persona;
 import com.example.inicial1.repositories.BaseRepository;
 import com.example.inicial1.repositories.PersonaRepository;
@@ -8,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -40,6 +42,23 @@ public class PersonaServicesImpl extends BaseServiceImpl<Persona, Long> implemen
             Page<Persona> personas = personaRepository.searchNativo(filtro, pageable);
             return personas;
         } catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    public List<PersonaBasicaDTO> findAllDTOs() throws Exception {
+        try {
+            List<Persona> entities = personaRepository.findAll();  // Obtenemos todas las entidades Persona
+            List<PersonaBasicaDTO> dtos = new ArrayList<>();
+            ModelMapper modelMapper = new ModelMapper();
+
+            // Mapeamos cada entidad Persona a un DTO
+            for (Persona persona : entities) {
+                dtos.add(modelMapper.map(persona, PersonaBasicaDTO.class));
+            }
+
+            return dtos;
+        } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
     }
